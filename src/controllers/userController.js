@@ -99,7 +99,7 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        let userId = req.params.id || req.query.id;
+        let userId = req.params.userId || req.query.userId;
         if (!userId) return res.status(400).send({ status: false, message: 'pls give a userId in params' });
         if (!isValidObjectId(userId)) return res.status(400).send({ status: false, message: 'pls give a valid userId in params' });
         let user = await userModel.findById({userId});
@@ -137,14 +137,14 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
 
-        let userId = req.params.id;
-        console.log(jobId);
-        if (!mongoose.Types.ObjectId.isValid(userId)) return res.status(400).send({ status: false, message: "Give a valid user ObjectId" });
+        let userId = req.params.userId;
+        //console.log(userId);
+        if (!isValid(userId)) return res.status(400).send({ status: false, message: "Give a valid userId" });
 
         let user = await userModel.findOne({ _id: userId, isDeleted: false });
         if (!user) return res.status(404).send({ status: false, message: "This user doesn't exists." });
 
-        await userModel.findOneAndUpdate({ _id: id }, { isDeleted: true });
+        await userModel.findOneAndUpdate({ _id: userId }, { isDeleted: true });
 
         return res.status(200).send({ status: true, message: "user deleted successfully." });
 
